@@ -22,8 +22,12 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/statusBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:itemRippleColor="@color/statusBar"
+        android:outlineAmbientShadowColor="@color/statusBar"
+        android:outlineSpotShadowColor="@color/statusBar"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_bar_menu" />
 
