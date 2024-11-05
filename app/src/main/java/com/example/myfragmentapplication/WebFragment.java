@@ -67,7 +67,7 @@ public class WebFragment extends Fragment {
         WebView webView = view.findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl("https://web/");
+        webView.loadUrl("https://sapapp1001.acbaca.local:50001/sap/bc/ui2/flp?appState=lean#Action-ZRESDISPINC");
         return view;
 
     }
