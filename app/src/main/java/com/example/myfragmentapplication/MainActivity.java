@@ -42,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new HomeFragment());
             } else if (item.getItemId() == R.id.nav_search) {
                 replaceFragment(new SearchFragment());
-            } else if (item.getItemId() == R.id.nav_exit) {
+            } else if (item.getItemId() == R.id.nav_login) {
+                replaceFragment(new LoginFragment());
+            } else if (item.getItemId() == R.id.nav_web) {
+                replaceFragment(new WebFragment());
+            }else if (item.getItemId() == R.id.nav_exit) {
                 replaceFragment(new ExitFragment());
             }
 
