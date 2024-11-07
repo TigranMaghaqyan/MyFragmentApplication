@@ -1,15 +1,9 @@
 package com.example.myfragmentapplication;
 
-import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -19,9 +13,28 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private int bottomPosition;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        bottomPosition = sharedPreferences.getInt("bottomPosition", 0);
+        if (bottomPosition == 0) {
+            replaceFragment(new HomeFragment());
+        } else if (bottomPosition == 1) {
+            replaceFragment(new SearchFragment());
+        } else if (bottomPosition == 2) {
+            replaceFragment(new LoginFragment());
+        } else if (bottomPosition == 3) {
+            replaceFragment(new WebFragment());
+        } else if (bottomPosition == 4) {
+            replaceFragment(new ExitFragment());
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +47,27 @@ public class MainActivity extends AppCompatActivity {
 
         });
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        replaceFragment(new HomeFragment());
+
+        //replaceFragment(new HomeFragment());
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
             if (item.getItemId() == R.id.nav_home) {
+                bottomPosition = 0;
                 replaceFragment(new HomeFragment());
             } else if (item.getItemId() == R.id.nav_search) {
+                bottomPosition = 1;
                 replaceFragment(new SearchFragment());
             } else if (item.getItemId() == R.id.nav_login) {
+                bottomPosition = 2;
                 replaceFragment(new LoginFragment());
             } else if (item.getItemId() == R.id.nav_web) {
+                bottomPosition = 3;
                 replaceFragment(new WebFragment());
-            }else if (item.getItemId() == R.id.nav_exit) {
+            } else if (item.getItemId() == R.id.nav_exit) {
+                bottomPosition = 4;
                 replaceFragment(new ExitFragment());
             }
-
             return true;
         });
 
@@ -62,5 +80,12 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+        myEdit.putInt("bottomPosition", bottomPosition);
+        myEdit.apply();
+    }
 }
