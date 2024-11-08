@@ -11,4 +11,5 @@
     <string name="search_fragment">search fragment</string>
     <string name="login">Login</string>
     <string name="web">Web</string>
+    <string name="todo">TODO</string>
 </resources>
