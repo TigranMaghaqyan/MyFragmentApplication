@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_BOTTOM_BAR_POSITION = "bottom_bar_position";
     SharedPreferences settings;
     SharedPreferences.Editor prefEditor;
+    private OnBackPressedCallback onBackPressedCallback;
 
 
     @Override
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         prefEditor = settings.edit();
         prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, settings.getInt(KEY_BOTTOM_BAR_POSITION,0));
-        prefEditor.apply();
+        prefEditor.commit();
     }
 
     @Override
@@ -73,31 +76,46 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.nav_home) {
                 prefEditor = settings.edit();
                 prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 0);
-                prefEditor.apply();
+                prefEditor.commit();
                 replaceFragment(new HomeFragment());
             } else if (item.getItemId() == R.id.nav_search) {
                 prefEditor = settings.edit();
                 prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 1);
-                prefEditor.apply();
+                prefEditor.commit();
                 replaceFragment(new SearchFragment());
             } else if (item.getItemId() == R.id.nav_login) {
                 prefEditor = settings.edit();
                 prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 2);
-                prefEditor.apply();
+                prefEditor.commit();
                 replaceFragment(new LoginFragment());
             } else if (item.getItemId() == R.id.nav_web) {
                 prefEditor = settings.edit();
                 prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 3);
-                prefEditor.apply();
+                prefEditor.commit();
                 replaceFragment(new WebFragment());
             } else if (item.getItemId() == R.id.nav_exit) {
                 prefEditor = settings.edit();
                 prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 4);
-                prefEditor.apply();
+                prefEditor.commit();
                 replaceFragment(new ExitFragment());
             }
             return true;
         });
+        onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Your business logic to handle the back pressed event
+                Toast.makeText(MainActivity.this,"exit",Toast.LENGTH_SHORT).show();
+                //finishActivity(0);
+                prefEditor = settings.edit();
+                prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 0);
+                prefEditor.commit();
+                System.exit(1);
+
+            }
+        };
+
+        getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
 
     }
 
@@ -113,14 +131,31 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         prefEditor = settings.edit();
         prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, settings.getInt(KEY_BOTTOM_BAR_POSITION,0));
-        prefEditor.apply();
+        prefEditor.commit();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         prefEditor = settings.edit();
+        prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 0);
+        prefEditor.commit();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        prefEditor = settings.edit();
         prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, settings.getInt(KEY_BOTTOM_BAR_POSITION,0));
-        prefEditor.apply();
+        prefEditor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        prefEditor = settings.edit();
+        prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, settings.getInt(KEY_BOTTOM_BAR_POSITION,0));
+        prefEditor.commit();
+
     }
 }
