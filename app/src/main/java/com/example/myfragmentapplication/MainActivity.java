@@ -101,12 +101,13 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
+//        bottomNavigationView.setSelectedItemId(R.id.nav_web);
+
         onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Your business logic to handle the back pressed event
                 Toast.makeText(MainActivity.this,"exit",Toast.LENGTH_SHORT).show();
-                //finishActivity(0);
                 prefEditor = settings.edit();
                 prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 0);
                 prefEditor.commit();
@@ -138,7 +139,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         prefEditor = settings.edit();
-        prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, 0);
+        prefEditor.putInt(KEY_BOTTOM_BAR_POSITION, settings.getInt(KEY_BOTTOM_BAR_POSITION,0));
+//        prefEditor.clear().commit();
         prefEditor.commit();
     }
 
